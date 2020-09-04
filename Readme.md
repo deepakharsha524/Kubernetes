@@ -1,12 +1,15 @@
+#Kubernetes using Kubeadm
+
 Install Kubernetes Cluster using kubeadm
+
 Documentation to set up a Kubernetes cluster on CentOS 7 Virtual machines. Setting up cluster with one master node and two worker nodes
 On both master and worker
-Pre-requisites
-Install, enable and start docker service
-Disable SELinux
+##Pre-requisites
+*Install, enable and start docker service*
+*Disable SELinux*
 setenforce 0
 sed -i --follow-symlinks 's/^SELINUX=enforcing/SELINUX=disabled/' /etc/sysconfig/selinux
-Disable Firewall
+*Disable Firewall*
 systemctl disable firewalld
 systemctl stop firewalld
 Disable swap
