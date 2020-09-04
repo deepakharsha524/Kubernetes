@@ -55,9 +55,9 @@ Initialize Kubernetes Cluster
 
 
 
-
-                                            AWS - EKS
-Pre-requisites:
+#
+#                                            AWS - EKS #
+## Pre-requisites:
 AWS CLI: The AWS Command Line Interface (CLI) is a unified tool to manage your AWS services. With just one tool to download and configure, you can control multiple AWS services Used for Eksctl to grab authentication token (version >1.16.156 of CLI)
 eksctl :  eksctl is a simple CLI tool for creating clusters on EKS - Amazon’s new managed Kubernetes service for EC2. It is written in Go, uses CloudFormation, was created by Weaveworks and it welcomes contributions from the community
 Kubectl : Kubectl is a command line tool for controlling Kubernetes clusters. kubectl looks for a file named config in the $HOME/.kube directory. You can specify other kubeconfig files by setting the KUBECONFIG environment variable or by setting the --kubeconfig flag.
