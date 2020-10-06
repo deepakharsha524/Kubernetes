@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mediawiki-configmap
+  labels:
+    app.configmap: mediawiki-configmap
+    app.version: "12.19"
+data:
+  MYSQL_DATABASE: "wikidatabase"
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: mediawiki
+spec:
+  selector:
+    matchLabels:
+      app: mediawiki
+  replicas: 2 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: mediawiki
+    spec:
+      containers:
+      - name: mediawiki
+        #image: <>.dkr.ecr.us-west-2.amazonaws.com/mediawiki/mediawiki:1
+        image: 192.168.136.87:5000/ha-mobiwiki:latest
+        resources:
+          requests:
+            memory: "16Gi"
+            cpu: "1"
+          limits:
+            memory: "16Gi"
+            cpu: "1"
+        ports:
+        - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /mediawiki
+            port: 80
+          initialDelaySeconds: 120
+          periodSeconds: 60
+          timeoutSeconds: 30
+          failureThreshold: 3
+        envFrom:
+        - configMapRef:
+            name: mediawiki-configmap
+#      imagePullSecrets:
+#        - name: mydockercredentials

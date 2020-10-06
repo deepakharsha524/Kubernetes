@@ -1,0 +1,65 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mediawiki-mysql-configmap
+  labels:
+    app.configmap: mediawiki-mysql-configmap
+    app.version: "12.19"
+data:
+  MYSQL_DATABASE: "wikidatabase"
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: mediawiki-mysql
+spec:
+  selector:
+    matchLabels:
+      app: mediawiki-mysql
+  replicas: 1 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: mediawiki-mysql
+    spec:
+      containers:
+      - name: mediawiki-mysql
+        #image: <>.dkr.ecr.us-west-2.amazonaws.com/eksrepo/mediawiki-mysql_mysql:1
+        image: 192.168.136.87:5000/ha-mobiwiki_mysql:latest
+        env:
+        - name: MYSQL_USER
+          value: wiki
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: user
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: password
+        resources:
+          requests:
+            memory: "16Gi"
+            cpu: "1"
+          limits:
+            memory: "16Gi"
+            cpu: "1"
+        ports:
+        - containerPort: 3306
+        envFrom:
+        - configMapRef:
+            name: mediawiki-mysql-configmap
+        volumeMounts:
+          - mountPath: /var/lib/mysql
+            name: my-sql-persistant
+#      imagePullSecrets:
+#        - name: mydockercredentials
+      volumes:
+        - name: my-sql-persistant
+          hostPath:
+            path: /home/admin/
+#          persistentVolumeClaim:
+#          claimName: nfs-mc-api
+
