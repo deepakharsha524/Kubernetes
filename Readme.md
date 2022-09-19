@@ -2,6 +2,10 @@
 
 Install Kubernetes Cluster using kubeadm
 
+
+
+
+
 Documentation to set up a Kubernetes cluster on CentOS 7 Virtual machines. Setting up cluster with one master node and two worker nodes
 On both master and worker
 ## Pre-requisites
